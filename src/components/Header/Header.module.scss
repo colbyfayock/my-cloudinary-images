@@ -1,0 +1,27 @@
+@import "@styles/settings/__settings";
+
+.header {
+
+  width: 100%;
+  font-size: 1.2em;
+  background-color: $color-header-background;
+  color: white;
+  padding: 1em 0;
+
+  p {
+    margin: 0;
+  }
+
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerTitle {
+  flex-grow: 1;
+  font-size: 1.3em;
+  font-weight: $font-weight-black;
+}

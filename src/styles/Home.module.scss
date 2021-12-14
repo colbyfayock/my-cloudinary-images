@@ -1,0 +1,58 @@
+@import "@styles/settings/__settings";
+
+.header {
+  font-size: 2em;
+}
+
+.folders {
+
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 3em;
+
+  li {
+
+    border: solid 2px gray;
+
+    &:hover,
+    &[data-active-folder="true"] {
+      border-color: blueviolet;
+    }
+
+  }
+
+  button {
+    display: block;
+    width: 100%;
+    padding: 1em;
+    background: white;
+    border: none;
+    cursor: pointer;
+  }
+
+}
+
+.images {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-gap: 3em;
+}
+
+.imageTitle {
+  font-size: 1.4em;
+  margin: .4em 0 0;
+}
+
+.imageImage {
+
+  & > div {
+    display: block!important;
+  }
+
+}
