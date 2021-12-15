@@ -10,7 +10,36 @@ import { search, mapImageResources } from '../lib/cloudinary';
 
 import styles from '@styles/Home.module.scss'
 
-export default function Home({ images }) {
+export default function Home({ images: defaultImages, nextCursor: defaultNextCursor, totalCount: defaultTotalCount }) {
+  const [images, setImages] = useState(defaultImages);
+  const [nextCursor, setNextCursor] = useState(defaultNextCursor)
+  const [totalCount, setTotalCount] = useState(defaultTotalCount)
+
+  async function handleOnLoadMore(e) {
+    e.preventDefault();
+
+    const results = await fetch('/api/search', {
+      method: 'POST',
+      body: JSON.stringify({
+        expression: `folder=""`,
+        nextCursor
+      })
+    }).then(r => r.json());
+
+    const { resources, next_cursor: nextPageCursor, total_count: updatedTotalCount } = results;
+
+    const images = mapImageResources(resources);
+
+    setImages(prev => {
+      return [
+        ...prev,
+        ...images
+      ]
+    });
+    setNextCursor(nextPageCursor);
+    setTotalCount(updatedTotalCount);
+  }
+
   return (
     <Layout>
       <Head>
@@ -39,6 +68,11 @@ export default function Home({ images }) {
             )
           })}
         </ul>
+        {totalCount > images.length && (
+          <p>
+            <Button onClick={handleOnLoadMore}>Load More Results</Button>
+          </p>
+        )}
       </Container>
     </Layout>
   )
@@ -49,13 +83,15 @@ export async function getStaticProps() {
     expression: 'folder=""'
   });
 
-  const { resources } = results;
+  const { resources, next_cursor: nextCursor, total_count: totalCount } = results;
 
   const images = mapImageResources(resources);
 
   return {
     props: {
-      images
+      images,
+      nextCursor,
+      totalCount
     }
   }
 }
